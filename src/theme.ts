@@ -15,7 +15,7 @@ const MainTheme = createTheme(
       secondary: {
         light: "#598C9C",
         main: "#D33F49",
-        dark: "#598C9C",
+        dark: "#262730",
       },
     },
   },
