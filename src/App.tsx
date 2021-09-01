@@ -4,41 +4,56 @@ import { pokemon } from "./types";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/core/Autocomplete";
 
-import {
-  useGetPokemonByNameMutation,
-  useGetAllPokemonQuery,
-} from "./store/api/pokeApi";
+import * as pokeApi from "./store/api/pokeApi";
 
 import { StyledApp } from "./App.styles";
+import { Button, LinearProgress } from "@material-ui/core";
 
 const App = () => {
-  const [getPokemon] = useGetPokemonByNameMutation();
+  const [getPokemon, { error, isLoading }] =
+    pokeApi.useGetPokemonByNameMutation();
   const [selecionado, setSelecionado] = useState("");
   const [poke, setPoke] = useState<pokemon>();
 
-  const { data, error, isLoading } = useGetAllPokemonQuery("");
+  const getAllPokemon = pokeApi.useGetAllPokemonQuery("");
   const [allPokeList, setAllPokeList] = useState<
     { name: string; key: number }[]
   >([]);
 
   useEffect(() => {
-    !isLoading &&
-      data &&
-      data.results.map((datum, index) => {
+    !getAllPokemon.isLoading &&
+      getAllPokemon.data &&
+      getAllPokemon.data.results.map((datum, index) => {
         allPokeList.push({ name: datum.name, key: index });
       });
-  }, [data]);
+  }, [getAllPokemon.data]);
 
   const getPokemonFunc = async (name: string) => {
     const res: pokemon = await getPokemon(name).unwrap();
 
+    if ((name = "")) {
+      setPoke(await getPokemon("pikachu").unwrap());
+    }
+
+    if (error) {
+      alert("Erro!");
+      return;
+    }
     setPoke(res);
   };
 
   return (
     <StyledApp>
+      {isLoading && <LinearProgress color="secondary" />}
+
       <div className="div-central">
-        {poke && <img alt="pokemao" src={poke?.sprites.front_default || ""} />}
+        <div className="barra">
+          <p>{poke?.name}</p>
+        </div>
+        <div>
+          <img src={poke?.sprites.front_default || ""} />
+        </div>
+
         <Autocomplete
           disablePortal
           id="combo-box-demo"
@@ -60,6 +75,9 @@ const App = () => {
             />
           )}
         />
+        <Button variant="contained" color="secondary">
+          Adicionar
+        </Button>
       </div>
     </StyledApp>
   );
