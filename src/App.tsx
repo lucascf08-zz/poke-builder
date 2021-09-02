@@ -6,8 +6,8 @@ import Autocomplete from "@material-ui/core/Autocomplete";
 
 import * as pokeApi from "./store/api/pokeApi";
 
-import { StyledApp } from "./App.styles";
-import { Button, LinearProgress } from "@material-ui/core";
+import { StyledApp, StyledPokeContainer } from "./App.styles";
+import { Button, Fade, Grow, LinearProgress } from "@material-ui/core";
 
 const App = () => {
   const [getPokemon, { error, isLoading }] =
@@ -29,18 +29,18 @@ const App = () => {
       });
   }, [getAllPokemon.data]);
 
+  useEffect(() => {
+    selecionado && getPokemonFunc(selecionado);
+    !selecionado && setPoke(undefined);
+  }, [selecionado]);
+
   const getPokemonFunc = async (name: string) => {
-    const res: pokemon = await getPokemon(name).unwrap();
-
-    if ((name = "")) {
-      setPoke(await getPokemon("pikachu").unwrap());
+    try {
+      const res: pokemon = await getPokemon(name).unwrap();
+      setPoke(res);
+    } catch (err) {
+      alert("erro!");
     }
-
-    if (error) {
-      alert("Erro!");
-      return;
-    }
-    setPoke(res);
   };
   const addToTeam = (poke: pokemon | undefined) => {
     poke && pokeTeam.length < 6 && setPokeTeam([...pokeTeam, poke]);
@@ -52,60 +52,68 @@ const App = () => {
 
   return (
     <StyledApp>
-      {isLoading && <LinearProgress color="secondary" />}
-      <div className="div-central">
+      <div className="header">
         <h1>Poke-Builder</h1>
-        <div className="barra">
-          <p>{poke?.name}</p>
+      </div>
+      <Fade in={poke != undefined && !isLoading}>
+        <div className="poke-selecao">
+          <div className="barra">
+            <p>{poke ? poke.name : ""}</p> //
+            <p>{poke ? poke.types[0].type.name : ""}</p>
+          </div>
+          <div className="img-container">
+            <img src={poke ? poke.sprites.front_default : ""} />
+          </div>
         </div>
-        <div>
-          <img src={poke?.sprites.front_default || ""} />
-        </div>
+      </Fade>
+      <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={allPokeList}
+        getOptionLabel={(option) => option.name}
+        sx={{ width: "50vw" }}
+        inputValue={selecionado}
+        onInputChange={(event, newSelecionado) => {
+          setSelecionado(newSelecionado);
+        }}
+        selectOnFocus
+        clearOnBlur
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Selecione seu Pokémon"
+            variant="standard"
+            value={selecionado}
+            color="secondary"
+          />
+        )}
+      />
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => addToTeam(poke)}
+        sx={{ width: "50vw" }}
+      >
+        Adicionar
+      </Button>
+      <div className="barra" />
+      <div className="team-container">
+        {pokeTeam.map((pokemon, i) => (
+          <StyledPokeContainer type={pokemon.types[0].type.name}>
+            <img src={pokemon.sprites.front_default} />
+            <p>
+              {pokemon.name}//{pokemon.types[0].type.name}
+            </p>
 
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          options={allPokeList}
-          getOptionLabel={(option) => option.name}
-          sx={{ width: 300 }}
-          inputValue={selecionado}
-          onInputChange={(event, newSelecionado) => {
-            setSelecionado(newSelecionado);
-            getPokemonFunc(newSelecionado);
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Selecione seu Pokémon"
-              variant="standard"
-              value={selecionado}
+            <Button
+              onClick={() => removeFromTeam(i)}
+              variant="contained"
               color="secondary"
-            />
-          )}
-        />
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => addToTeam(poke)}
-        >
-          Adicionar
-        </Button>
-        <div className="barra" />
-        <div className="team-container">
-          {pokeTeam.map((pokemon, i) => (
-            <div className="poke-container">
-              <img src={pokemon.sprites.front_default} />
-              <p>{pokemon.name}</p>
-              <Button
-                onClick={() => removeFromTeam(i)}
-                variant="contained"
-                color="secondary"
-              >
-                REMOVER
-              </Button>
-            </div>
-          ))}
-        </div>
+            >
+              REMOVER
+            </Button>
+          </StyledPokeContainer>
+        ))}
       </div>
     </StyledApp>
   );
