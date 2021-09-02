@@ -7,9 +7,10 @@ const MainTheme = createTheme(
       fontWeightRegular: 400,
     },
     palette: {
+      mode: "light",
       primary: {
         light: "#eee",
-        main: "#EFF0D1",
+        main: "#eee",
         dark: "#6191A1",
       },
       secondary: {
