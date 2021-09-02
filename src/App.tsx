@@ -14,6 +14,7 @@ const App = () => {
     pokeApi.useGetPokemonByNameMutation();
   const [selecionado, setSelecionado] = useState("");
   const [poke, setPoke] = useState<pokemon>();
+  const [pokeTeam, setPokeTeam] = useState<pokemon[]>([]);
 
   const getAllPokemon = pokeApi.useGetAllPokemonQuery("");
   const [allPokeList, setAllPokeList] = useState<
@@ -41,12 +42,19 @@ const App = () => {
     }
     setPoke(res);
   };
+  const addToTeam = (poke: pokemon | undefined) => {
+    poke && pokeTeam.length < 6 && setPokeTeam([...pokeTeam, poke]);
+  };
+
+  const removeFromTeam = (index: number) => {
+    setPokeTeam(pokeTeam.filter((p, i) => i !== index));
+  };
 
   return (
     <StyledApp>
       {isLoading && <LinearProgress color="secondary" />}
-
       <div className="div-central">
+        <h1>Poke-Builder</h1>
         <div className="barra">
           <p>{poke?.name}</p>
         </div>
@@ -75,9 +83,29 @@ const App = () => {
             />
           )}
         />
-        <Button variant="contained" color="secondary">
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => addToTeam(poke)}
+        >
           Adicionar
         </Button>
+        <div className="barra" />
+        <div className="team-container">
+          {pokeTeam.map((pokemon, i) => (
+            <div className="poke-container">
+              <img src={pokemon.sprites.front_default} />
+              <p>{pokemon.name}</p>
+              <Button
+                onClick={() => removeFromTeam(i)}
+                variant="contained"
+                color="secondary"
+              >
+                REMOVER
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
     </StyledApp>
   );
