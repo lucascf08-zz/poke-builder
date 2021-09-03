@@ -15,7 +15,7 @@ export const StyledApp = withTheme(styled.div`
   gap: 2rem;
   .header {
     background: ${(props) => props.theme.palette.secondary.main};
-    color: ${(props) => props.theme.palette.primary.light};
+    color: ${(props) => props.theme.palette.primary.main};
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.24);
     width: 100%;
     position: sticky;
