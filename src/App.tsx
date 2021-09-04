@@ -30,7 +30,8 @@ const App = () => {
   }, [getAllPokemon.data]);
 
   useEffect(() => {
-    selecionado && getPokemonFunc(selecionado);
+    allPokeList.some((e) => e.name === selecionado) &&
+      getPokemonFunc(selecionado);
     !selecionado && setPoke(undefined);
   }, [selecionado]);
 
