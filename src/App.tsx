@@ -1,13 +1,13 @@
+import { StyledApp, StyledPokeContainer } from "./App.styles";
 import React, { useEffect, useState } from "react";
+//types
 import { pokemon } from "./types";
 //material-ui
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/core/Autocomplete";
-
-import * as pokeApi from "./store/api/pokeApi";
-
-import { StyledApp, StyledPokeContainer } from "./App.styles";
 import { Button, Fade, Grow, LinearProgress } from "@material-ui/core";
+//api
+import * as pokeApi from "./store/api/pokeApi";
 
 const App = () => {
   const [getPokemon, { error, isLoading }] =
@@ -24,8 +24,11 @@ const App = () => {
   useEffect(() => {
     !getAllPokemon.isLoading &&
       getAllPokemon.data &&
-      getAllPokemon.data.results.map((datum, index) => {
-        allPokeList.push({ name: datum.name, key: index });
+      getAllPokemon.data.results.forEach((datum, index) => {
+        setAllPokeList((allPokeList) => [
+          ...allPokeList,
+          { name: datum.name, key: index },
+        ]);
       });
   }, [getAllPokemon.data]);
 
@@ -56,14 +59,14 @@ const App = () => {
       <div className="header">
         <h1>Poke-Builder</h1>
       </div>
-      <Fade in={poke != undefined && !isLoading}>
+      <Fade in={poke !== undefined && !isLoading}>
         <div className="poke-selecao">
           <div className="barra">
             <p>{poke ? poke.name : ""}</p> //
             <p>{poke ? poke.types[0].type.name : ""}</p>
           </div>
           <div className="img-container">
-            <img src={poke ? poke.sprites.front_default : ""} />
+            <img alt={`sprite`} src={poke ? poke.sprites.front_default : ""} />
           </div>
         </div>
       </Fade>
@@ -101,7 +104,10 @@ const App = () => {
       <div className="team-container">
         {pokeTeam.map((pokemon, i) => (
           <StyledPokeContainer type={pokemon.types[0].type.name}>
-            <img src={pokemon.sprites.front_default} />
+            <img
+              src={pokemon.sprites.front_default}
+              alt={`${pokemon.name} sprite`}
+            />
             <p>
               {pokemon.name}//{pokemon.types[0].type.name}
             </p>
