@@ -12,3 +12,4 @@ export interface pokemon {
     };
   }[];
 }
+//teste
