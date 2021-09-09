@@ -8,19 +8,36 @@ export const StyledApp = withTheme(styled.div`
   height: 100vh;
   width: 100vw;
   margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 10vw 30vw 10vw;
+  gap: 1em;
   .header {
-    background: ${(props) => props.theme.palette.secondary.main};
-    color: ${(props) => props.theme.palette.primary.main};
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.24);
     width: 100%;
     position: sticky;
   }
 
+  header {
+    grid-column: 1 / span 5;
+  }
+
+  footer {
+    grid-column: 1 / span 5;
+  }
+  main {
+    grid-column: 1 / span 3;
+    align-items: center;
+    justify-content: center;
+    .select-container {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  aside {
+    background: ${(props) => props.theme.palette.secondary.main};
+    grid-column: span 2;
+  }
   .barra {
     display: flex;
     flex-direction: row;
