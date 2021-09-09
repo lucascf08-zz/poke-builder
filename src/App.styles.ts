@@ -5,17 +5,13 @@ import itemFundo from "./assets/item-fundo.png";
 export const StyledApp = withTheme(styled.div`
   background: ${(props) => props.theme.palette.primary.main};
   font-size: larger;
-  height: 100vh;
-  width: 100vw;
+
   margin: 0;
+  padding: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 10vw 30vw 10vw;
   gap: 1em;
-  .header {
-    width: 100%;
-    position: sticky;
-  }
 
   header {
     grid-column: 1 / span 5;
@@ -23,7 +19,14 @@ export const StyledApp = withTheme(styled.div`
 
   footer {
     grid-column: 1 / span 5;
+    background: ${(props) => props.theme.palette.secondary.main};
+    display: grid;
+    align-items: center;
+    grid-gap: 1rem;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
   }
+
   main {
     grid-column: 1 / span 3;
     align-items: center;
@@ -31,12 +34,21 @@ export const StyledApp = withTheme(styled.div`
     .select-container {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
   }
 
   aside {
     background: ${(props) => props.theme.palette.secondary.main};
     grid-column: span 2;
+  }
+
+  @media (max-width: 40rem) {
+    main,
+    aside {
+      grid-column: 1 / span 5;
+    }
   }
   .barra {
     display: flex;
@@ -53,15 +65,6 @@ export const StyledApp = withTheme(styled.div`
     }
     background: url(${itemFundo});
     border-radius: 1rem;
-  }
-
-  .team-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 10rem));
-    grid-gap: 1rem;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
   }
 `);
 

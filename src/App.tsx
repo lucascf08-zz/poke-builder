@@ -109,13 +109,13 @@ const App = () => {
               {pokemon.name}//{pokemon.types[0].type.name}
             </p>
 
-            <Button
+            {/* <Button
               onClick={() => removeFromTeam(i)}
               variant="contained"
               color="secondary"
             >
               REMOVER
-            </Button>
+            </Button> */}
           </StyledPokeContainer>
         ))}
       </footer>
