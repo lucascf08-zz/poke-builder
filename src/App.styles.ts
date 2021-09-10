@@ -31,16 +31,6 @@ export const StyledApp = withTheme(styled.div`
     }
   }
 
-  .img-container {
-    min-width: 40vh;
-    min-height: 40vh;
-    img {
-      width: 100%;
-    }
-    background: url(${itemFundo});
-    border-radius: 1rem;
-  }
-
   aside {
     padding: 1rem 1rem;
 
@@ -66,10 +56,115 @@ export const StyledApp = withTheme(styled.div`
     }
   }
 `);
-
 interface props {
   type: string;
 }
+
+export const StyledPokeSelector = withTheme(styled.div<props>`
+  min-width: 40vh;
+  min-height: 40vh;
+  background: url(${itemFundo});
+
+  .inner-div {
+    img {
+      width: 100%;
+    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .info-bar {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    background-color: ${(props) =>
+      props.type === "fire"
+        ? "#FF8832"
+        : props.type === "water"
+        ? "#48C3CB"
+        : props.type === "grass"
+        ? "#74CB48"
+        : props.type === "bug"
+        ? "#A8B820"
+        : props.type === "dark"
+        ? "#705848"
+        : props.type === "dragon"
+        ? "#7038F8"
+        : props.type === "electric"
+        ? "#F8D030"
+        : props.type === "fairy"
+        ? "#EE99AC"
+        : props.type === "fighting"
+        ? "#C03028"
+        : props.type === "flying"
+        ? "#A890F0"
+        : props.type === "ghost"
+        ? "#705898"
+        : props.type === "ground"
+        ? "#E0C068"
+        : props.type === "ice"
+        ? "#98D8D8"
+        : props.type === "normal"
+        ? "#A8A878"
+        : props.type === "poison"
+        ? "#A040A0"
+        : props.type === "psychic"
+        ? "#F85888"
+        : props.type === "rock"
+        ? "#B8A038"
+        : props.type === "steel"
+        ? "#B8B8D0"
+        : props.theme.palette.secondary.main};
+    color: white;
+  }
+
+  border-color: ${(props) =>
+    props.type === "fire"
+      ? "#FF8832"
+      : props.type === "water"
+      ? "#48C3CB"
+      : props.type === "grass"
+      ? "#74CB48"
+      : props.type === "bug"
+      ? "#A8B820"
+      : props.type === "dark"
+      ? "#705848"
+      : props.type === "dragon"
+      ? "#7038F8"
+      : props.type === "electric"
+      ? "#F8D030"
+      : props.type === "fairy"
+      ? "#EE99AC"
+      : props.type === "fighting"
+      ? "#C03028"
+      : props.type === "flying"
+      ? "#A890F0"
+      : props.type === "ghost"
+      ? "#705898"
+      : props.type === "ground"
+      ? "#E0C068"
+      : props.type === "ice"
+      ? "#98D8D8"
+      : props.type === "normal"
+      ? "#A8A878"
+      : props.type === "poison"
+      ? "#A040A0"
+      : props.type === "psychic"
+      ? "#F85888"
+      : props.type === "rock"
+      ? "#B8A038"
+      : props.type === "steel"
+      ? "#B8B8D0"
+      : props.theme.palette.secondary.main};
+  border-style: solid;
+  border-width: ${(props) => (props.type ? "4px" : "0px")};
+`);
+
 export const StyledPokeContainer = withTheme(styled.div<props>`
   display: flex;
   align-items: center;

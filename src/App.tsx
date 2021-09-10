@@ -1,11 +1,15 @@
-import { StyledApp, StyledPokeContainer } from "./App.styles";
+import {
+  StyledApp,
+  StyledPokeContainer,
+  StyledPokeSelector,
+} from "./App.styles";
 import React, { useEffect, useState } from "react";
 //types
 import { pokemon } from "./types";
 //material-ui
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/core/Autocomplete";
-import { Button, CircularProgress } from "@material-ui/core";
+import { Alert, Button, CircularProgress, Collapse } from "@material-ui/core";
 //api
 import * as pokeApi from "./store/api/pokeApi";
 //assets
@@ -13,8 +17,7 @@ import { ReactComponent as TrashIcon } from "./assets/TrashIcon.svg";
 import { ReactComponent as PokeballIcon } from "./assets/PokeballIcon.svg";
 
 const App = () => {
-  const [getPokemon, { error, isLoading }] =
-    pokeApi.useGetPokemonByNameMutation();
+  const [getPokemon] = pokeApi.useGetPokemonByNameMutation();
   const [selecionado, setSelecionado] = useState("");
   const [poke, setPoke] = useState<pokemon>();
   const [pokeTeam, setPokeTeam] = useState<pokemon[]>([]);
@@ -23,6 +26,9 @@ const App = () => {
   const [allPokeList, setAllPokeList] = useState<
     { name: string; key: number }[]
   >([]);
+
+  const [isLoading, setLoading] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
     !getAllPokemon.isLoading &&
@@ -39,18 +45,24 @@ const App = () => {
     allPokeList.some((e) => e.name === selecionado) &&
       getPokemonFunc(selecionado);
     !selecionado && setPoke(undefined);
+    openAlert && setOpenAlert(false);
   }, [selecionado]);
 
   const getPokemonFunc = async (name: string) => {
+    setLoading(true);
     try {
       const res: pokemon = await getPokemon(name).unwrap();
       setPoke(res);
+      setLoading(false);
     } catch (err) {
       alert("erro!");
+      setLoading(false);
     }
   };
   const addToTeam = (poke: pokemon | undefined) => {
-    poke && pokeTeam.length < 6 && setPokeTeam([...pokeTeam, poke]);
+    poke && pokeTeam.length < 6
+      ? setPokeTeam([...pokeTeam, poke])
+      : setOpenAlert(true);
   };
 
   const removeFromTeam = (index: number) => {
@@ -61,13 +73,29 @@ const App = () => {
     <StyledApp>
       <header>
         <h1>Poke-Builder</h1>
+        <h4> by Lucas C. Ferreira. Powered by pokeapi.co/</h4>
       </header>
       <main>
-        <div className="img-container">
-          {poke && (
-            <img alt={`sprite`} src={poke ? poke.sprites.front_default : ""} />
+        <StyledPokeSelector type={poke?.types[0].type.name}>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            poke && (
+              <div className="inner-div">
+                <img
+                  alt={`sprite`}
+                  src={poke ? poke.sprites.front_default : ""}
+                />
+
+                <div className="info-bar">
+                  {poke.name.toUpperCase()}
+                  <br />
+                  Type: {poke.types[0].type.name.toUpperCase()}
+                </div>
+              </div>
+            )
           )}
-        </div>
+        </StyledPokeSelector>
 
         <Autocomplete
           disablePortal
@@ -99,6 +127,9 @@ const App = () => {
         >
           <PokeballIcon className="pokeball-icon" />
         </Button>
+        <Collapse in={openAlert}>
+          <Alert severity="error">Só pode selecionar até 6 Pokémons!</Alert>
+        </Collapse>
       </main>
       <aside>
         {pokeTeam.map((pokemon, i) => (
