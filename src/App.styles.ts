@@ -23,12 +23,9 @@ export const StyledApp = withTheme(styled.div<appProps>`
 
     text-align: center;
   }
-  aside {
-    background-color: red;
-  }
 
   main {
-    grid-column: ${(props) => (props.open ? "span 2" : "1/span 3")};
+    grid-column: span 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,7 +37,24 @@ export const StyledApp = withTheme(styled.div<appProps>`
   }
   .poke-checker {
     grid-column: 1 / span 1;
-    display: ${(props) => (props.open ? "flex" : "none")};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    font-size: larger;
+    .main-infos {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 1rem;
+      width: 100%;
+    }
   }
   .team-container {
     grid-column: span 1;
@@ -49,7 +63,7 @@ export const StyledApp = withTheme(styled.div<appProps>`
     gap: 0.5rem;
     grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
     padding: 1rem 1rem;
-    align-content: flex-start;
+    align-content: center;
     justify-content: flex-start;
     align-items: flex-start;
 
@@ -59,9 +73,10 @@ export const StyledApp = withTheme(styled.div<appProps>`
   }
 
   @media (max-width: 80rem) {
+    grid-template-rows: auto;
     main,
     aside {
-      grid-column: 1 / span 5;
+      grid-column: 1 / span 4 !important;
     }
     .img-container {
       min-width: 20vh;
@@ -72,12 +87,101 @@ export const StyledApp = withTheme(styled.div<appProps>`
 interface props {
   type: string;
 }
+export const TypeColorWrapper = withTheme(styled.span<props>`
+  background-color: ${(props) =>
+    props.type === "fire"
+      ? "#FF8832"
+      : props.type === "water"
+      ? "#48C3CB"
+      : props.type === "grass"
+      ? "#74CB48"
+      : props.type === "bug"
+      ? "#A8B820"
+      : props.type === "dark"
+      ? "#705848"
+      : props.type === "dragon"
+      ? "#7038F8"
+      : props.type === "electric"
+      ? "#F8D030"
+      : props.type === "fairy"
+      ? "#EE99AC"
+      : props.type === "fighting"
+      ? "#C03028"
+      : props.type === "flying"
+      ? "#A890F0"
+      : props.type === "ghost"
+      ? "#705898"
+      : props.type === "ground"
+      ? "#E0C068"
+      : props.type === "ice"
+      ? "#98D8D8"
+      : props.type === "normal"
+      ? "#A8A878"
+      : props.type === "poison"
+      ? "#A040A0"
+      : props.type === "psychic"
+      ? "#F85888"
+      : props.type === "rock"
+      ? "#B8A038"
+      : props.type === "steel"
+      ? "#B8B8D0"
+      : props.theme.palette.secondary.main};
+  border-color: ${(props) =>
+    props.type === "fire"
+      ? "#FF8832"
+      : props.type === "water"
+      ? "#48C3CB"
+      : props.type === "grass"
+      ? "#74CB48"
+      : props.type === "bug"
+      ? "#A8B820"
+      : props.type === "dark"
+      ? "#705848"
+      : props.type === "dragon"
+      ? "#7038F8"
+      : props.type === "electric"
+      ? "#F8D030"
+      : props.type === "fairy"
+      ? "#EE99AC"
+      : props.type === "fighting"
+      ? "#C03028"
+      : props.type === "flying"
+      ? "#A890F0"
+      : props.type === "ghost"
+      ? "#705898"
+      : props.type === "ground"
+      ? "#E0C068"
+      : props.type === "ice"
+      ? "#98D8D8"
+      : props.type === "normal"
+      ? "#A8A878"
+      : props.type === "poison"
+      ? "#A040A0"
+      : props.type === "psychic"
+      ? "#F85888"
+      : props.type === "rock"
+      ? "#B8A038"
+      : props.type === "steel"
+      ? "#B8B8D0"
+      : props.theme.palette.secondary.main};
+  border-style: solid;
+  border-width: ${(props) => (props.type ? "4px" : "0px")};
+  color: white;
+`);
 
 export const StyledPokeSelector = withTheme(styled.div<props>`
   min-width: 40vh;
   min-height: 40vh;
   background: url(${itemFundo});
 
+  .loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100%;
+  }
   .inner-div {
     img {
       width: 100%;

@@ -2,6 +2,7 @@ import {
   StyledApp,
   StyledPokeContainer,
   StyledPokeSelector,
+  TypeColorWrapper,
 } from "./App.styles";
 import React, { useEffect, useState } from "react";
 //types
@@ -15,6 +16,11 @@ import {
   CircularProgress,
   Collapse,
   Fade,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
 } from "@material-ui/core";
 //api
 import * as pokeApi from "./store/api/pokeApi";
@@ -25,7 +31,10 @@ import { ReactComponent as PokeballIcon } from "./assets/PokeballIcon.svg";
 const App = () => {
   const [getPokemon] = pokeApi.useGetPokemonByNameMutation();
   const [selecionado, setSelecionado] = useState("");
+
   const [poke, setPoke] = useState<pokemon>();
+  const [checkedPoke, setCheckedPoke] = useState<pokemon>();
+
   const [pokeTeam, setPokeTeam] = useState<pokemon[]>([]);
 
   const getAllPokemon = pokeApi.useGetAllPokemonQuery("");
@@ -80,16 +89,58 @@ const App = () => {
   return (
     <StyledApp open={drawerOpen}>
       <header>
-        <h1 onClick={() => setDrawerOpen(!drawerOpen)}>Poke-Builder</h1>
+        <h1>Poke-Builder</h1>
         <h4> by Lucas C. Ferreira. Powered by pokeapi.co/</h4>
       </header>
 
-      <aside className="poke-checker"></aside>
+      <aside className="poke-checker">
+        {poke && (
+          <>
+            <div className="main-infos">
+              <span>
+                <b>ID:</b>
+                {poke?.id}
+              </span>
+              <span>
+                <b>ABILITY:</b>
+                {poke?.abilities[0].ability.name}
+              </span>
+              <span>
+                <b>TYPES:</b>
+                {poke?.types.map((type, i) => (
+                  <TypeColorWrapper key={i} type={type.type.name}>
+                    {type.type.name}
+                  </TypeColorWrapper>
+                ))}
+              </span>
+            </div>
+
+            <b>STATS:</b>
+            <Table>
+              <TableBody>
+                {poke?.stats.map((stat, i) => (
+                  <>
+                    <TableRow>
+                      <TableCell>
+                        <b>{stat.base_stat}</b>
+                      </TableCell>
+
+                      <TableCell>{stat.stat.name}</TableCell>
+                    </TableRow>
+                  </>
+                ))}
+              </TableBody>
+            </Table>
+          </>
+        )}
+      </aside>
 
       <main>
         <StyledPokeSelector type={poke?.types[0].type.name}>
           {isLoading ? (
-            <CircularProgress />
+            <div className="loader">
+              <CircularProgress color="secondary" size="8rem" />
+            </div>
           ) : (
             poke && (
               <div className="inner-div">
@@ -152,6 +203,7 @@ const App = () => {
             <img
               src={pokemon.sprites.front_default}
               alt={`${pokemon.name} sprite`}
+              onClick={() => setPoke(pokemon)}
             />
             <div className="info-bar">
               <p>

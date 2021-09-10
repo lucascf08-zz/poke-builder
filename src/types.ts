@@ -11,5 +11,24 @@ export interface pokemon {
       url: string;
     };
   }[];
+
+  abilities: {
+    ability: {
+      name: string;
+      url: string;
+    };
+    is_hidden: boolean;
+    slot: number;
+  }[];
+  base_experience: number;
+  height: number;
+
+  stats: {
+    base_stat: number;
+    effort: number;
+    stat: {
+      name: string;
+      url: string;
+    };
+  }[];
 }
-//teste
