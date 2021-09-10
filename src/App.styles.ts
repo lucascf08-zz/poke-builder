@@ -2,7 +2,11 @@ import withTheme from "@material-ui/styles/withTheme";
 import styled from "styled-components";
 import itemFundo from "./assets/item-fundo.png";
 
-export const StyledApp = withTheme(styled.div`
+interface appProps {
+  open: boolean;
+}
+
+export const StyledApp = withTheme(styled.div<appProps>`
   background: ${(props) => props.theme.palette.primary.light};
   font-size: larger;
 
@@ -15,12 +19,16 @@ export const StyledApp = withTheme(styled.div`
     background: ${(props) => props.theme.palette.secondary.main};
     color: ${(props) => props.theme.palette.primary.light};
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.24);
-    grid-column: 1 / span 5;
+    grid-column: 1 / span 4;
 
     text-align: center;
   }
+  aside {
+    background-color: red;
+  }
+
   main {
-    grid-column: 1 / span 3;
+    grid-column: ${(props) => (props.open ? "span 2" : "1/span 3")};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,15 +38,20 @@ export const StyledApp = withTheme(styled.div`
       width: 2rem;
     }
   }
+  .poke-checker {
+    grid-column: 1 / span 1;
+    display: ${(props) => (props.open ? "flex" : "none")};
+  }
+  .team-container {
+    grid-column: span 1;
 
-  aside {
-    padding: 1rem 1rem;
-
-    grid-column: span 2;
     display: grid;
+    gap: 0.5rem;
     grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-    align-items: center;
-    justify-content: center;
+    padding: 1rem 1rem;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: flex-start;
 
     .trash-icon {
       align-self: flex-end;

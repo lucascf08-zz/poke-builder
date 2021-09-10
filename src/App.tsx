@@ -9,7 +9,13 @@ import { pokemon } from "./types";
 //material-ui
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/core/Autocomplete";
-import { Alert, Button, CircularProgress, Collapse } from "@material-ui/core";
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  Collapse,
+  Fade,
+} from "@material-ui/core";
 //api
 import * as pokeApi from "./store/api/pokeApi";
 //assets
@@ -29,6 +35,8 @@ const App = () => {
 
   const [isLoading, setLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     !getAllPokemon.isLoading &&
@@ -70,11 +78,14 @@ const App = () => {
   };
 
   return (
-    <StyledApp>
+    <StyledApp open={drawerOpen}>
       <header>
-        <h1>Poke-Builder</h1>
+        <h1 onClick={() => setDrawerOpen(!drawerOpen)}>Poke-Builder</h1>
         <h4> by Lucas C. Ferreira. Powered by pokeapi.co/</h4>
       </header>
+
+      <aside className="poke-checker"></aside>
+
       <main>
         <StyledPokeSelector type={poke?.types[0].type.name}>
           {isLoading ? (
@@ -99,7 +110,6 @@ const App = () => {
 
         <Autocomplete
           disablePortal
-          id="combo-box-demo"
           options={allPokeList}
           getOptionLabel={(option) => option.name}
           sx={{ width: "50vw" }}
@@ -131,7 +141,8 @@ const App = () => {
           <Alert severity="error">Só pode selecionar até 6 Pokémons!</Alert>
         </Collapse>
       </main>
-      <aside>
+
+      <aside className="team-container">
         {pokeTeam.map((pokemon, i) => (
           <StyledPokeContainer type={pokemon.types[0].type.name}>
             <TrashIcon
