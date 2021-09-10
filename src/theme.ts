@@ -10,13 +10,13 @@ const MainTheme = createTheme(
       mode: "light",
       primary: {
         light: "#eee",
-        main: "#eee",
+        main: "#8b8d92",
         dark: "#6191A1",
       },
       secondary: {
         light: "#598C9C",
-        main: "#D33F49",
-        dark: "#262730",
+        main: "#CC0000",
+        dark: "#FFDE00",
       },
     },
   },

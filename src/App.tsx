@@ -5,9 +5,12 @@ import { pokemon } from "./types";
 //material-ui
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/core/Autocomplete";
-import { Button, Fade, Grow, LinearProgress } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 //api
 import * as pokeApi from "./store/api/pokeApi";
+//assets
+import { ReactComponent as TrashIcon } from "./assets/TrashIcon.svg";
+import { ReactComponent as PokeballIcon } from "./assets/PokeballIcon.svg";
 
 const App = () => {
   const [getPokemon, { error, isLoading }] =
@@ -56,72 +59,66 @@ const App = () => {
 
   return (
     <StyledApp>
-      <div className="header">
+      <header>
         <h1>Poke-Builder</h1>
-      </div>
-      <Fade in={poke !== undefined && !isLoading}>
-        <div className="poke-selecao">
-          <div className="barra">
-            <p>{poke ? poke.name : ""}</p> //
-            <p>{poke ? poke.types[0].type.name : ""}</p>
-          </div>
-          <div className="img-container">
+      </header>
+      <main>
+        <div className="img-container">
+          {poke && (
             <img alt={`sprite`} src={poke ? poke.sprites.front_default : ""} />
-          </div>
+          )}
         </div>
-      </Fade>
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={allPokeList}
-        getOptionLabel={(option) => option.name}
-        sx={{ width: "50vw" }}
-        inputValue={selecionado}
-        onInputChange={(event, newSelecionado) => {
-          setSelecionado(newSelecionado);
-        }}
-        selectOnFocus
-        clearOnBlur
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Selecione seu Pokémon"
-            variant="standard"
-            value={selecionado}
-            color="secondary"
-          />
-        )}
-      />
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => addToTeam(poke)}
-        sx={{ width: "50vw" }}
-      >
-        Adicionar
-      </Button>
-      <div className="barra" />
-      <div className="team-container">
+
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={allPokeList}
+          getOptionLabel={(option) => option.name}
+          sx={{ width: "50vw" }}
+          inputValue={selecionado}
+          onInputChange={(event, newSelecionado) => {
+            setSelecionado(newSelecionado);
+          }}
+          selectOnFocus
+          clearOnBlur
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Selecione seu Pokémon"
+              variant="standard"
+              value={selecionado}
+              color="secondary"
+            />
+          )}
+        />
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => addToTeam(poke)}
+          sx={{ width: "50vw" }}
+        >
+          <PokeballIcon className="pokeball-icon" />
+        </Button>
+      </main>
+      <aside>
         {pokeTeam.map((pokemon, i) => (
           <StyledPokeContainer type={pokemon.types[0].type.name}>
+            <TrashIcon
+              className="trash-icon"
+              onClick={() => removeFromTeam(i)}
+            />
             <img
               src={pokemon.sprites.front_default}
               alt={`${pokemon.name} sprite`}
             />
-            <p>
-              {pokemon.name}//{pokemon.types[0].type.name}
-            </p>
-
-            <Button
-              onClick={() => removeFromTeam(i)}
-              variant="contained"
-              color="secondary"
-            >
-              REMOVER
-            </Button>
+            <div className="info-bar">
+              <p>
+                {pokemon.name}//{pokemon.types[0].type.name}
+              </p>
+            </div>
           </StyledPokeContainer>
         ))}
-      </div>
+      </aside>
     </StyledApp>
   );
 };
