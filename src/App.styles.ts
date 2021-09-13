@@ -62,14 +62,11 @@ export const StyledApp = withTheme(styled.div<appProps>`
     display: grid;
     gap: 0.5rem;
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    grid-template-rows: auto;
     padding: 1rem 1rem;
     align-content: center;
     justify-content: flex-start;
-    align-items: flex-start;
-
-    .trash-icon {
-      align-self: flex-end;
-    }
+    align-items: center;
   }
 
   @media (max-width: 80rem) {
@@ -288,6 +285,10 @@ export const StyledPokeContainer = withTheme(styled.div<props>`
   justify-content: center;
   flex-direction: column;
   background: url(${itemFundo});
+
+  .trash-icon {
+    align-self: flex-end;
+  }
 
   border-color: ${(props) =>
     props.type === "fire"

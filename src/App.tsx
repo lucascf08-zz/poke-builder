@@ -90,7 +90,7 @@ const App = () => {
     <StyledApp open={drawerOpen}>
       <header>
         <h1>Poke-Builder</h1>
-        <h4> by Lucas C. Ferreira. Powered by pokeapi.co/</h4>
+        <h4>by Lucas C. Ferreira. Powered by pokeapi.co/</h4>
       </header>
 
       <aside className="poke-checker">
