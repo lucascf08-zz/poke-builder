@@ -36,27 +36,28 @@ export const StyledApp = withTheme(styled.div<appProps>`
       width: 2rem;
     }
   }
+
   .poke-checker {
     grid-column: 1 / span 1;
+    font-size: larger;
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    justify-content: center;
     text-align: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 1rem;
+    align-self: center;
 
-    font-size: larger;
     .main-infos {
       display: flex;
       flex-direction: row;
-      align-items: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 1rem;
       width: 100%;
     }
   }
+
   .team-container {
     grid-column: span 1;
 
@@ -65,8 +66,9 @@ export const StyledApp = withTheme(styled.div<appProps>`
     grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
 
     align-content: flex-start;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
+    align-self: center;
   }
 
   @media (max-width: 80rem) {
@@ -167,8 +169,6 @@ export const TypeColorWrapper = withTheme(styled.span<props>`
 `);
 
 export const StyledPokeSelector = withTheme(styled.div<props>`
-  min-width: 40vh;
-  min-height: 40vh;
   background: url(${itemFundo});
 
   .loader {
@@ -180,6 +180,8 @@ export const StyledPokeSelector = withTheme(styled.div<props>`
     min-height: 100%;
   }
   .inner-div {
+    min-width: 40vh;
+    min-height: 40vh;
     img {
       width: 100%;
     }

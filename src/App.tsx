@@ -114,23 +114,24 @@ const App = () => {
                 ))}
               </span>
             </div>
+            <div>
+              <b>STATS:</b>
+              <Table>
+                <TableBody>
+                  {poke?.stats.map((stat, i) => (
+                    <>
+                      <TableRow>
+                        <TableCell>
+                          <b>{stat.base_stat}</b>
+                        </TableCell>
 
-            <b>STATS:</b>
-            <Table>
-              <TableBody>
-                {poke?.stats.map((stat, i) => (
-                  <>
-                    <TableRow>
-                      <TableCell>
-                        <b>{stat.base_stat}</b>
-                      </TableCell>
-
-                      <TableCell>{stat.stat.name}</TableCell>
-                    </TableRow>
-                  </>
-                ))}
-              </TableBody>
-            </Table>
+                        <TableCell>{stat.stat.name}</TableCell>
+                      </TableRow>
+                    </>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </>
         )}
       </aside>
@@ -163,7 +164,7 @@ const App = () => {
           disablePortal
           options={allPokeList}
           getOptionLabel={(option) => option.name}
-          sx={{ width: "50vw" }}
+          sx={{ width: "100%" }}
           inputValue={selecionado}
           onInputChange={(event, newSelecionado) => {
             setSelecionado(newSelecionado);
@@ -184,7 +185,7 @@ const App = () => {
           variant="contained"
           color="secondary"
           onClick={() => addToTeam(poke)}
-          sx={{ width: "50vw" }}
+          sx={{ width: "100%" }}
         >
           <PokeballIcon className="pokeball-icon" />
         </Button>
