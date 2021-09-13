@@ -11,6 +11,7 @@ export const StyledApp = withTheme(styled.div<appProps>`
   font-size: larger;
 
   display: grid;
+  gap: 1rem;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 20vh 80vh;
   justify-content: flex-start;
@@ -40,7 +41,7 @@ export const StyledApp = withTheme(styled.div<appProps>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem 1rem;
+
     justify-content: center;
     text-align: center;
     flex-wrap: wrap;
@@ -61,10 +62,9 @@ export const StyledApp = withTheme(styled.div<appProps>`
 
     display: grid;
     gap: 0.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-    grid-template-rows: auto;
-    padding: 1rem 1rem;
-    align-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+
+    align-content: flex-start;
     justify-content: flex-start;
     align-items: center;
   }
