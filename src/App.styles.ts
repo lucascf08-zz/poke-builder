@@ -40,7 +40,7 @@ export const StyledApp = withTheme(styled.div<appProps>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem 0;
+    padding: 1rem 1rem;
     justify-content: center;
     text-align: center;
     flex-wrap: wrap;
@@ -61,7 +61,7 @@ export const StyledApp = withTheme(styled.div<appProps>`
 
     display: grid;
     gap: 0.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     padding: 1rem 1rem;
     align-content: center;
     justify-content: flex-start;
