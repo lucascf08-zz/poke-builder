@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { pokemon } from "../../types";
 interface result {
   count: number;
-  results: { name: string; url: string }[];
+  results: pokemon[];
 }
 // Define a service using a base URL and expected endpoints
 export const pokemonApi = createApi({

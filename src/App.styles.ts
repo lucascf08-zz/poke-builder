@@ -2,11 +2,7 @@ import withTheme from "@material-ui/styles/withTheme";
 import styled from "styled-components";
 import itemFundo from "./assets/item-fundo.png";
 
-interface appProps {
-  open: boolean;
-}
-
-export const StyledApp = withTheme(styled.div<appProps>`
+export const StyledApp = withTheme(styled.div`
   background: ${(props) => props.theme.palette.primary.light};
   font-size: larger;
 
@@ -337,6 +333,7 @@ export const StyledPokeContainer = withTheme(styled.div<props>`
     width: 100%;
     align-items: center;
     justify-content: center;
+    text-align: center;
     background-color: ${(props) =>
       props.type === "fire"
         ? "#FF8832"

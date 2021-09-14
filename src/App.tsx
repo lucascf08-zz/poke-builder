@@ -4,7 +4,7 @@ import {
   StyledPokeSelector,
   TypeColorWrapper,
 } from "./App.styles";
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 //types
 import { pokemon } from "./types";
 //material-ui
@@ -15,11 +15,9 @@ import {
   Button,
   CircularProgress,
   Collapse,
-  Fade,
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableRow,
 } from "@material-ui/core";
 //api
@@ -27,41 +25,51 @@ import * as pokeApi from "./store/api/pokeApi";
 //assets
 import { ReactComponent as TrashIcon } from "./assets/TrashIcon.svg";
 import { ReactComponent as PokeballIcon } from "./assets/PokeballIcon.svg";
+import { Stats } from "fs";
 
 const App = () => {
   const [getPokemon] = pokeApi.useGetPokemonByNameMutation();
   const [selecionado, setSelecionado] = useState("");
 
   const [poke, setPoke] = useState<pokemon>();
-  const [checkedPoke, setCheckedPoke] = useState<pokemon>();
 
   const [pokeTeam, setPokeTeam] = useState<pokemon[]>([]);
 
   const getAllPokemon = pokeApi.useGetAllPokemonQuery("");
-  const [allPokeList, setAllPokeList] = useState<
-    { name: string; key: number }[]
-  >([]);
 
   const [isLoading, setLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const allPokeList: { name: string; key: number }[] = useMemo(() => {
+    const res = getAllPokemon.data;
+    if (res) {
+      return res?.results.map((p, i) => ({ name: p.name, key: i }));
+    } else {
+      return [];
+    }
+  }, [getAllPokemon]);
+
+  const typeList: string[] = useMemo(() => {
+    const typeArray: string[] = [];
+    const res = getAllPokemon.data;
+    if (res !== undefined) {
+      res.results.map((p) =>
+        p.types.map((t) => {
+          if (!typeArray.includes(t.type.name)) {
+            typeArray.push(t.type.name);
+          }
+        })
+      );
+    }
+    return typeArray;
+  }, []);
 
   useEffect(() => {
-    !getAllPokemon.isLoading &&
-      getAllPokemon.data &&
-      getAllPokemon.data.results.forEach((datum, index) => {
-        setAllPokeList((allPokeList) => [
-          ...allPokeList,
-          { name: datum.name, key: index },
-        ]);
-      });
-  }, [getAllPokemon.data]);
-
-  useEffect(() => {
-    allPokeList.some((e) => e.name === selecionado) &&
+    if (allPokeList.some((e) => e.name === selecionado)) {
       getPokemonFunc(selecionado);
-    !selecionado && setPoke(undefined);
+    } else if (!selecionado) {
+      setPoke(undefined);
+    }
     openAlert && setOpenAlert(false);
   }, [selecionado]);
 
@@ -76,6 +84,13 @@ const App = () => {
       setLoading(false);
     }
   };
+
+  const filterByType = (poke: pokemon, selectedType: string) => {
+    poke.types.map((type) => {
+      return type.type.name === selectedType;
+    });
+  };
+
   const addToTeam = (poke: pokemon | undefined) => {
     poke && pokeTeam.length < 6
       ? setPokeTeam([...pokeTeam, poke])
@@ -87,7 +102,7 @@ const App = () => {
   };
 
   return (
-    <StyledApp open={drawerOpen}>
+    <StyledApp>
       <header>
         <h1>Poke-Builder</h1>
         <h4>by Lucas C. Ferreira. Powered by pokeapi.co/</h4>
@@ -153,7 +168,8 @@ const App = () => {
                 <div className="info-bar">
                   {poke.name.toUpperCase()}
                   <br />
-                  Type: {poke.types[0].type.name.toUpperCase()}
+                  Power:{" "}
+                  {poke.stats.reduce((ack, value) => ack + value.base_stat, 0)}
                 </div>
               </div>
             )
@@ -164,7 +180,7 @@ const App = () => {
           disablePortal
           options={allPokeList}
           getOptionLabel={(option) => option.name}
-          sx={{ width: "100%" }}
+          fullWidth
           inputValue={selecionado}
           onInputChange={(event, newSelecionado) => {
             setSelecionado(newSelecionado);
@@ -185,7 +201,7 @@ const App = () => {
           variant="contained"
           color="secondary"
           onClick={() => addToTeam(poke)}
-          sx={{ width: "100%" }}
+          fullWidth
         >
           <PokeballIcon className="pokeball-icon" />
         </Button>
@@ -208,7 +224,14 @@ const App = () => {
             />
             <div className="info-bar">
               <p>
-                {pokemon.name}//{pokemon.types[0].type.name}
+                <strong>{pokemon.name.toUpperCase()}</strong>
+                <br />
+                {pokemon.types.map(
+                  (type) => `${type.type.name.toUpperCase()} `
+                )}
+                <br />
+                Power:
+                {pokemon.stats.reduce((ack, value) => ack + value.base_stat, 0)}
               </p>
             </div>
           </StyledPokeContainer>
